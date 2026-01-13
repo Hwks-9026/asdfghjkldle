@@ -43,13 +43,26 @@ fn main() -> io::Result<()> {
                 }
             } else {
                 match key.code {
-                    KeyCode::Char(c) => {
-                        if app.current_guess.len() < app.word_length {
-                            app.current_guess.push(c);
+                    KeyCode::Char(c) if c.is_ascii_alphabetic() => {
+                        let low_c = c.to_ascii_lowercase();
+                        app.current_guess[app.cursor_pos] = low_c;
+                        if app.cursor_pos < app.word_length - 1 {
+                            app.cursor_pos += 1;
                         }
                     }
+                    
+                    KeyCode::Left => {
+                        app.cursor_pos = app.cursor_pos.saturating_sub(1);
+                    }
+                    KeyCode::Right => {
+                        if app.cursor_pos < app.word_length - 1 {
+                            app.cursor_pos += 1;
+                        }
+                    }
+
                     KeyCode::Backspace => {
-                        app.current_guess.pop();
+                        app.current_guess[app.cursor_pos] = '~';
+                        app.cursor_pos = app.cursor_pos.saturating_sub(1);
                     }
                     KeyCode::Enter => {
                         app.submit_guess();

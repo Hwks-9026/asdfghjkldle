@@ -44,15 +44,22 @@ pub fn ui(f: &mut Frame, app: &App) {
         rows.push(Line::from(spans));
     }
 
-    // Render current input row (if not game over)
     if !app.game_over && app.history.len() < app.max_guesses {
         let mut current_spans = Vec::new();
         for i in 0..app.word_length {
-            let ch = app.current_guess.chars().nth(i).unwrap_or('_');
-            current_spans.push(Span::styled(
-                format!(" {} ", ch.to_uppercase()),
-                Style::default().fg(Color::White).add_modifier(Modifier::DIM),
-            ));
+            let ch = app.current_guess[i];
+            let is_cursor = i == app.cursor_pos;
+
+            let style = if is_cursor {
+                Style::default()
+                    .fg(Color::Blue)
+                    .add_modifier(Modifier::BOLD)
+                    .add_modifier(Modifier::UNDERLINED)
+            } else {
+                Style::default().fg(Color::White).add_modifier(Modifier::DIM)
+            };
+
+            current_spans.push(Span::styled(format!(" {} ", ch.to_uppercase()), style));
         }
         rows.push(Line::from(current_spans));
     }
