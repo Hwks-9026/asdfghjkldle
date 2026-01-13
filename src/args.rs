@@ -4,7 +4,7 @@ use clap::Parser;
 #[command(author = "Davis Amaral", version = "0.1.0", about = "A chaotic, dictionary-free Wordle clone", long_about = None)]
 pub struct Args {
     /// Length of the random string to guess
-    #[arg(short, long, default_value_t = 5)]
+    #[arg(short, long, default_value_t = 10)]
     pub length: usize,
 
     /// Optional: Use a specific seed instead of today's date

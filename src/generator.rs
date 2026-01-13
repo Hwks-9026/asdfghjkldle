@@ -1,7 +1,5 @@
-use chrono::Local;
 use rand::{Rng, SeedableRng};
-use rand_chacha::ChaCha8Rng;
-use sha2::{Digest, Sha256};
+use sha2::Digest;
 
 use crate::args::Args;
 
